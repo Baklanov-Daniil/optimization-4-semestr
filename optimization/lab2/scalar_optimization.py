@@ -114,13 +114,25 @@ def dichotomy(func: Callable[[float], float], a: float, b: float,
     
     a_curr = round(a, prec)
     b_curr = round(b, prec)
+
+    iteration += 1
+    c = round((a_curr + b_curr) / 2, prec)
+    x1 = round(c - epsilon / 2, prec)
+    x2 = round(c + epsilon / 2, prec)
+    f1 = round(func(x1), prec)
+    f2 = round(func(x2), prec)
+
+    if f1 > f2:
+        a_new, b_new = x1, b_curr
+    else:
+        a_new, b_new = a_curr, x2
     
     if verbose:
         data.append({
             'No': iteration, 'ak': a_curr, 'bk': b_curr,
-            'c': '-', 'x1': '-', 'x2': '-', 
-            'f(x1)': '-', 'f(x2)': '-',
-            'ak+1': '-', 'bk+1': '-'
+            'x1': x1, 'x2': x2,
+            'f(x1)': f1, 'f(x2)': f2,
+            'ak+1': a_new, 'bk+1': b_new
         })
     
     while (b_curr - a_curr) > (2 * epsilon):
@@ -143,7 +155,6 @@ def dichotomy(func: Callable[[float], float], a: float, b: float,
                 'No': iteration,
                 'ak': a_curr,
                 'bk': b_curr,
-                'c': c,
                 'x1': x1,
                 'x2': x2,
                 'f(x1)': f1,
@@ -195,6 +206,7 @@ def fibonacci(func: Callable[[float], float], a: float, b: float,
     
     if f1 > f2:
         a_new, b_new = x1, b_curr
+        x1 = x2
     else:
         a_new, b_new = a_curr, x2
     
