@@ -1,44 +1,46 @@
-# Наискорейший спуск (3 метод)
 import math
 import numpy as np
 from scalar_optimization import golden_ratio
-
-epsilon = 1e-6
+# пункт 1
+epsilon = 1e-2
 x_current = np.zeros(2)
 a = 3
 b = 2
-max_iter = 10000
-lambda_search = np.array([-10, 10])
-
+max_iter = 50
+lambda_search = np.array([0, 5])
 # f (x, y) = A - (x - a) * e ** -(x - a) - (y - b) * e ** -(x - b);   A = 20, a = 3, b = 2
 def func(x, y):
-    return 20 - ((x - a) * (math.exp(-(x - a)))) - ((y - b) * (math.exp(-(y - b))))
+    return 20 - ((x - a) * math.exp(-(x - a))) - ((y - b) * math.exp(-(y - b)))
 
-def gradient(x, y): # производную по x и y посчитал на листке
+def gradient(x, y):
     grad_x = math.exp(-(x - a)) * (x - a - 1)
     grad_y = math.exp(-(y - b)) * (y - b - 1)
     return np.array([grad_x, grad_y])
 
-# пункт 1
 x_k = x_current.copy()
-k = 1 
+k = 1
+f_prev = func(x_k[0], x_k[1])
 
 while k < max_iter:
-    print(f"Итерация {k} ...")
+    # пункт 2
     grad = gradient(x_k[0], x_k[1])
-    grad_norm = np.linalg.norm(grad) # - пункт 2
-    
-    if grad_norm < epsilon: # пункт 3
-        star_x = x_k
+    grad_norm = np.linalg.norm(grad)
+    # пункт 3
+    if grad_norm < epsilon:
         break
-    else:
-        s_k = -(grad / grad_norm)
     
+    s_k = -(grad / grad_norm)
     # пункт 4
-    func_ = lambda lambda_: func(x_k[0] + lambda_ * s_k[0], x_k[1] + lambda_ * s_k[1])
+    func_ = lambda lam: func(x_k[0] + lam * s_k[0], x_k[1] + lam * s_k[1])
+    
     lambda_k = golden_ratio(func_, lambda_search[0], lambda_search[1], epsilon = epsilon, verbose = False)
+    
+    x_new = x_k + lambda_k * s_k
+    
+    print(f"\nk (Итерация) = {k} | λ = {lambda_k} | grad_norm = {grad_norm} | x_new (x_k) = {x_new}")
+       
+    x_k = x_new
     # пункт 5
     k += 1
 
-print(f"x* = ({star_x[0], star_x[1]}); f(x*) = {func(star_x[0], star_x[1])}")
-    
+print(f"\nx* = ({x_k[0]:.6f}, {x_k[1]:.6f}), f(x*) = {func(x_k[0], x_k[1]):.6f}, k = {k - 1}")
