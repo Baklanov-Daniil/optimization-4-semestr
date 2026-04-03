@@ -15,7 +15,7 @@ def make_line_search(point: np.ndarray, direction: np.ndarray) -> Callable[[floa
 def conjugate_directions_method(x0: list, eps: float) -> tuple:
     n = len(x0)
     x = np.array(x0, dtype=float)
-    iter = 0
+    iter = 1
     
     print(f"Начальная точка: x^0 = {x}")
     
@@ -48,14 +48,15 @@ def conjugate_directions_method(x0: list, eps: float) -> tuple:
             
         
         diff_norm = np.linalg.norm(x_0 - x)
-        iter += 1
         print(f"\nИтерация {iter}: ||x^0 - x_n|| = {diff_norm:.8f}")
         print(f"Текущая точка: {x}, f(x) = {func(x[0], x[1]):.8f}\n")
         
         if diff_norm <= eps:
             break
-            
+        
+        iter += 1
+
     return x, func(x[0], x[1])
 
-epsilon = 1e-4
+epsilon = 1e-3
 x_opt, f_opt = conjugate_directions_method([0.0, 0.0], epsilon)
