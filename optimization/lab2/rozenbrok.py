@@ -27,7 +27,7 @@ while k <= max_iter:
     delta = x_k - x_start
     f_new = func(x_k[0], x_k[1])
     
-    print(f"k = {k:3d} | x = {x_k} | ||Δx|| = {np.linalg.norm(delta):.2e} | Δf = {abs(f_new - f_start):.2e}")
+    print(f"k = {k} | x = {x_k} | ||Δx|| = {np.linalg.norm(delta):.2e} | Δf = {abs(f_new - f_start)}")
     
     if np.linalg.norm(delta) < epsilon or abs(f_new - f_start) < epsilon:
         star_x = x_k.copy()
