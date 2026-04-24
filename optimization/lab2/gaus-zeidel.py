@@ -46,9 +46,3 @@ while k < max_iter:
         k += 1
         
 print(f"\nx* = ({star_x[0]:.6f}, {star_x[1]:.6f})\nf(x*) = {func(star_x[0], star_x[1]):.6f}")
-    
-    
-
-
-
-
